@@ -242,7 +242,7 @@
           <div class="provider-type-select">
             <!-- Glyph positioned inside the trigger visually, centered vertically -->
             <div class="absolute left-3 top-0 h-10 z-10 pointer-events-none flex items-center">
-              <ProviderGlyph providerType={providerType} size="sm" />
+              <ProviderGlyph type={providerType} size="sm" />
             </div>
 
             <Select.Root customStore={providerTypeStore}>
@@ -251,7 +251,7 @@
                 {#each providerTypes as type}
                   <Select.Item value={type} label={type.label}>
                     <div class="flex items-center gap-3 py-0.5">
-                      <ProviderGlyph providerType={type.value} size="sm" />
+                      <ProviderGlyph type={type.value} size="sm" />
                       <span class="flex-1">{type.label}</span>
                     </div>
                   </Select.Item>
@@ -334,7 +334,7 @@
             placeholder={providerType === "azure"
               ? "https://your-resource.openai.azure.com"
               : providerType === "berget"
-              ? "api.berget.ai/v1"
+              ? "https://api.berget.ai/v1"
               : "https://api.openai.com/v1 (default) or custom endpoint"}
             required={requiresEndpoint}
           />

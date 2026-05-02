@@ -104,7 +104,7 @@
   }
 
   // Providers that need live model listing from their API (not LiteLLM static data)
-  const liveListProviders = new Set(["vllm", "berget"]);
+  const liveListProviders = new Set(["hosted_vllm", "berget"]);
 
   // Providers where LiteLLM names don't match user input (e.g. Azure uses deployment names)
   const noSuggestionsProviders = new Set(["azure"]);
