@@ -163,12 +163,15 @@ class ModelProviderService:
 
         # Build the litellm model identifier
         # For vLLM, use hosted_vllm prefix for litellm compliance
-        if provider_type == "vllm":
-            litellm_model = f"hosted_vllm/{model_name}"
-        elif provider_type == "azure":
-            litellm_model = f"azure/{model_name}"
-        else:
-            litellm_model = f"{provider_type}/{model_name}"
+        # Berget and GDM are OpenAI-compatible, so use "openai" provider type
+        provider_to_litellm = {
+            "vllm": "hosted_vllm",
+            "azure": "azure",
+            "berget": "openai",
+            "gdm": "openai",
+        }
+        litellm_prefix = provider_to_litellm.get(provider_type, provider_type)
+        litellm_model = f"{litellm_prefix}/{model_name}"
 
         kwargs: dict[str, Any] = {"model": litellm_model, "api_key": api_key}
 
