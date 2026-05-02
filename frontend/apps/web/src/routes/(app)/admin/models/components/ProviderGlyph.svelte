@@ -6,7 +6,7 @@
    * Uses subtle tinted backgrounds to avoid harsh color blocks
    */
 
-  export let providerType: "openai" | "azure" | "anthropic" | "gemini" | "cohere" | string;
+  export let type: "openai" | "azure" | "anthropic" | "gemini" | "cohere" | "berget" | string;
   export let size: "sm" | "md" | "lg" = "md";
 
   // Size mappings
@@ -52,6 +52,11 @@
       fg: "text-[oklch(40%_0.15_55)] dark:text-[oklch(81%_0.14_55)]",
       border: "border-[oklch(84%_0.05_55)] dark:border-[oklch(35%_0.07_55)]"
     },
+    berget: {
+      bg: "bg-[oklch(94%_0.05_180)] dark:bg-[oklch(23%_0.07_180)]",
+      fg: "text-[oklch(38%_0.18_180)] dark:text-[oklch(82%_0.16_180)]",
+      border: "border-[oklch(83%_0.06_180)] dark:border-[oklch(35%_0.09_180)]"
+    },
     hosted_vllm: {
       bg: "bg-[oklch(93%_0.035_140)] dark:bg-[oklch(21%_0.06_140)]",
       fg: "text-[oklch(37%_0.14_140)] dark:text-[oklch(80%_0.13_140)]",
@@ -66,7 +71,7 @@
     border: "border-dimmer"
   };
 
-  $: colors = providerColors[providerType] || defaultColors;
+  $: colors = providerColors[type] || defaultColors;
 </script>
 
 <div
@@ -82,7 +87,7 @@
     hover:translate-y-[-1px]
     hover:shadow-sm
   "
-  title={providerType}
+  title={type}
 >
   <svg
     class="{sizeConfig.icon} {colors.fg}"
@@ -93,32 +98,32 @@
     stroke-linecap="round"
     stroke-linejoin="round"
   >
-    {#if providerType === "openai"}
+    {#if type === "openai"}
       <!-- Overlapping circles - neural connections -->
       <circle cx="9" cy="12" r="5" />
       <circle cx="15" cy="12" r="5" />
-    {:else if providerType === "azure"}
+    {:else if type === "azure"}
       <!-- Angled parallelogram stack - cloud layers -->
       <path d="M4 8 L12 4 L20 8 L12 12 Z" />
       <path d="M4 12 L12 8 L20 12 L12 16 Z" />
       <path d="M4 16 L12 12 L20 16 L12 20 Z" />
-    {:else if providerType === "anthropic"}
+    {:else if type === "anthropic"}
       <!-- Rounded hexagon - organic meets technical -->
       <path d="M12 2 L20 7 L20 17 L12 22 L4 17 L4 7 Z" stroke-linejoin="round" />
-    {:else if providerType === "gemini"}
+    {:else if type === "gemini"}
       <!-- Twin stars/dots - duality -->
       <circle cx="8" cy="12" r="3" fill="currentColor" />
       <circle cx="16" cy="12" r="3" fill="currentColor" />
-    {:else if providerType === "cohere"}
+    {:else if type === "cohere"}
       <!-- Flowing wave/ribbon - coherence -->
       <path d="M2 12 Q7 6, 12 12 T22 12" />
       <path d="M2 16 Q7 10, 12 16 T22 16" />
-    {:else if providerType === "mistral"}
+    {:else if type === "mistral"}
       <!-- Diagonal stripes - wind/mistral -->
       <line x1="4" y1="4" x2="12" y2="20" />
       <line x1="10" y1="4" x2="18" y2="20" />
       <line x1="16" y1="4" x2="24" y2="20" />
-    {:else if providerType === "hosted_vllm"}
+    {:else if type === "hosted_vllm"}
       <!-- Chevron/V shape - vLLM -->
       <polyline points="4,6 12,18 20,6" />
     {:else}

@@ -41,6 +41,7 @@
     { value: "cohere", label: "Cohere" },
     { value: "mistral", label: "Mistral AI" },
     { value: "hosted_vllm", label: "vLLM" },
+    { value: "berget", label: "Berget AI" },
   ];
 
   const providerTypeStore = writable(providerTypes[0]);
@@ -217,8 +218,8 @@
     error = null;
   }
 
-  // Endpoint is required for Azure and vLLM
-  $: requiresEndpoint = providerType === "azure" || providerType === "hosted_vllm";
+  // Endpoint is required for Azure, vLLM, and Berget
+  $: requiresEndpoint = providerType === "azure" || providerType === "hosted_vllm" || providerType === "berget";
 </script>
 
 <Dialog.Root {openController}>
@@ -241,7 +242,7 @@
           <div class="provider-type-select">
             <!-- Glyph positioned inside the trigger visually, centered vertically -->
             <div class="absolute left-3 top-0 h-10 z-10 pointer-events-none flex items-center">
-              <ProviderGlyph providerType={providerType} size="sm" />
+              <ProviderGlyph type={providerType} size="sm" />
             </div>
 
             <Select.Root customStore={providerTypeStore}>
@@ -250,7 +251,7 @@
                 {#each providerTypes as type}
                   <Select.Item value={type} label={type.label}>
                     <div class="flex items-center gap-3 py-0.5">
-                      <ProviderGlyph providerType={type.value} size="sm" />
+                      <ProviderGlyph type={type.value} size="sm" />
                       <span class="flex-1">{type.label}</span>
                     </div>
                   </Select.Item>
@@ -332,6 +333,8 @@
             bind:value={endpoint}
             placeholder={providerType === "azure"
               ? "https://your-resource.openai.azure.com"
+              : providerType === "berget"
+              ? "https://api.berget.ai/v1"
               : "https://api.openai.com/v1 (default) or custom endpoint"}
             required={requiresEndpoint}
           />
@@ -342,6 +345,10 @@
           {:else if providerType === "azure"}
             <p class="text-muted-foreground text-xs mt-1">
               {m.endpoint_required_azure()}
+            </p>
+          {:else if providerType === "berget"}
+            <p class="text-muted-foreground text-xs mt-1">
+              https://api.berget.ai/v1
             </p>
           {:else}
             <p class="text-muted-foreground text-xs mt-1">

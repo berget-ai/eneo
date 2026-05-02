@@ -214,7 +214,7 @@
               title={m.edit_provider()}
             >
               <span class="transition-transform duration-150 group-hover:scale-105">
-                <ProviderGlyph providerType={provider.provider_type} size="md" />
+                <ProviderGlyph type={provider.provider_type} size="md" />
               </span>
               <span class="font-medium text-primary group-hover:text-accent-default group-hover:underline underline-offset-2 decoration-accent-default/50 transition-colors">
                 {provider.name}

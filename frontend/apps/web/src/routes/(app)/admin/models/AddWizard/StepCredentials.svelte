@@ -44,7 +44,8 @@
     gemini: "Google Gemini",
     cohere: "Cohere",
     mistral: "Mistral AI",
-    hosted_vllm: "vLLM"
+    hosted_vllm: "vLLM",
+    berget: "Berget AI"
   };
 
   // State
@@ -54,8 +55,9 @@
   // Validation
   $: isAzure = providerType === "azure";
   $: isVllm = providerType === "hosted_vllm";
-  $: isKnownProvider = ["openai", "azure", "anthropic", "gemini", "cohere", "mistral", "hosted_vllm"].includes(providerType);
-  $: requiresEndpoint = isAzure || isVllm;
+  $: isBerget = providerType === "berget";
+  $: isKnownProvider = ["openai", "azure", "anthropic", "gemini", "cohere", "mistral", "hosted_vllm", "berget"].includes(providerType);
+  $: requiresEndpoint = isAzure || isVllm || isBerget;
   $: isValid =
     providerName.trim() !== "" &&
     apiKey.trim() !== "" &&
@@ -160,9 +162,11 @@
             ? "https://your-resource.openai.azure.com"
             : isVllm
               ? "https://your-vllm-server.com"
-              : !isKnownProvider
-                ? m.endpoint_optional_generic()
-                : "https://api.openai.com/v1 (default)"}
+              : isBerget
+                ? "https://api.berget.ai/v1"
+                : !isKnownProvider
+                  ? m.endpoint_optional_generic()
+                  : "https://api.openai.com/v1 (default)"}
           required={requiresEndpoint}
         />
         <p class="text-muted-foreground text-xs">
@@ -170,6 +174,8 @@
             {m.endpoint_required_azure()}
           {:else if isVllm}
             {m.endpoint_required_vllm()}
+          {:else if isBerget}
+            {m.endpoint_required_for_provider()}
           {:else if !isKnownProvider}
             {m.endpoint_optional_generic()}
           {:else}
